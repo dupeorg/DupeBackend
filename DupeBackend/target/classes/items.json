@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "item_id_1": {
+        "userId": "user123",
+        "name": "Product A",
+        "image_url": "https://example.com/product_a.jpg",
+        "description": "Description of Product A"
+      },
+      "item_id_2": {
+        "userId": "user456",
+        "name": "Product B",
+        "image_url": "https://example.com/product_b.jpg",
+        "description": "Description of Product B"
+      }
+    }
+  ]
+}
