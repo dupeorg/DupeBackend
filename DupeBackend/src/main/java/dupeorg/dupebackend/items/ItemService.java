@@ -3,11 +3,11 @@ package dupeorg.dupebackend.items;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.internal.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -28,18 +28,26 @@ public class ItemService {
     }
 
     // Retrieve an item by its unique ID
-    public Item getItemById(String itemId) throws ExecutionException, InterruptedException {
+    public List<Item> getItemByUserId(String userId) throws ExecutionException, InterruptedException {
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference itemRef = firestore.collection(collectionName).document(itemId);
-        ApiFuture<DocumentSnapshot> future = itemRef.get();
-        DocumentSnapshot document = future.get();
+        CollectionReference itemsCollection = firestore.collection(collectionName);
 
-        if (document.exists()) {
-            return document.toObject(Item.class);
-        } else {
-            return null; // Item with the specified ID does not exist
+        // Build a query to filter items by userId
+        Query query = itemsCollection.whereEqualTo("userId", userId);
+
+        // Execute the query
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        QuerySnapshot queryResult = querySnapshot.get();
+
+        // Convert the query result to a list of Item objects
+        List<Item> items = new ArrayList<>();
+        for (QueryDocumentSnapshot document : queryResult) {
+            items.add(document.toObject(Item.class));
         }
+
+        return items;
     }
+
 
     // Update an item's data
     public void updateItem(String itemId, String userId, String name, String imageUrl, String description) {

@@ -25,6 +25,7 @@ public class MainServer {
         }
         // Define API endpoints and handlers
         server.createContext("/get_items", new GetItemsHandler(itemService));
+        server.createContext("/get_items/by_user", new GetItemsByUserIdHandler(itemService));
         server.createContext("/create_item", new CreateItemHandler());
 
         // Start the server
@@ -44,6 +45,32 @@ public class MainServer {
             String response = null;
             try {
                 response = itemService.convertItemsToJson(itemService.getAllItems());
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            sendResponse(exchange, response);
+        }
+    }
+
+    static class GetItemsByUserIdHandler implements HttpHandler {
+        private final ItemService itemService;
+        public GetItemsByUserIdHandler(ItemService itemService) {
+            this.itemService = itemService;
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            // Implement logic to handle GET /get_items
+            // Retrieve items and send the response
+            String response = null;
+            // Extract the 'paramName' parameter from the query string
+            String paramName = "user_id"; // Replace with the actual parameter name
+            String paramValue = exchange.getRequestURI().getQuery();
+            String userid = paramValue.split("=")[1];
+            try {
+                response = itemService.convertItemsToJson(itemService.getItemByUserId(userid));
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {

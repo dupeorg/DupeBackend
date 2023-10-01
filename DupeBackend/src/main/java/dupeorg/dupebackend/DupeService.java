@@ -25,7 +25,7 @@ public class DupeService {
 
     void execute(){
        try {
-           String res = itemService.createItem("user-1","sofa", "sample_sofa_url", "This is an old sofa");
+//           String res = itemService.createItem("user-2","chair", "sample_chair_url", "This is an old chair");
            mainServer.createAndStartServer();
        }
        catch(Exception e){
