@@ -6,8 +6,6 @@ import dupeorg.dupebackend.items.ItemAPI;
 import dupeorg.dupebackend.items.ItemService;
 import dupeorg.dupebackend.rest.MainServer;
 
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
 
 public class DupeService {
     private final FirebaseInitializer firebaseInitializer;
